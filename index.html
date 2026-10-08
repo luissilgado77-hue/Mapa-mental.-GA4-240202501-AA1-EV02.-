@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive PLE Mind Map - Luis Silgado</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #0f172a;
+            color: #f8fafc;
+            margin: 0;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+        /* MENÚ LATERAL DE NAVEGACIÓN */
+        .sidebar {
+            width: 340px;
+            background-color: #1e293b;
+            border-right: 1px solid #334155;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        .sidebar h2 { font-size: 16px; color: #38bdf8; margin-bottom: 5px; }
+        .sidebar p { font-size: 12px; color: #94a3b8; margin: 0 0 20px 0; }
+        .btn-branch {
+            background-color: #334155;
+            color: #cbd5e1;
+            border: 1px solid #475569;
+            padding: 12px;
+            margin-bottom: 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            text-align: left;
+            font-size: 13px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+        .btn-branch:hover { background-color: #475569; border-color: #38bdf8; }
+        .btn-branch.active {
+            background-color: #0284c7;
+            color: white;
+            border-color: #38bdf8;
+            box-shadow: 0 0 10px rgba(56, 189, 248, 0.3);
+        }
+
+        /* CONTENIDO PRINCIPAL */
+        .main-content {
+            flex: 1;
+            padding: 30px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .card {
+            background-color: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 8px;
+            padding: 25px;
+        }
+        h1 { font-size: 22px; color: #38bdf8; margin: 0; }
+        h3 { color: #38bdf8; margin-top: 0; border-bottom: 1px solid #334155; padding-bottom: 8px; }
+        
+        /* VISUALIZADOR DE JERARQUÍA / BIFURCACIÓN */
+        .viewer-box {
+            background-color: #0f172a;
+            border: 1px solid #334155;
+            padding: 20px;
+            border-radius: 6px;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        .bifurcation-node {
+            background-color: #1e293b;
+            border-left: 4px solid #eab308;
+            padding: 12px;
+            margin-top: 10px;
+            border-radius: 4px;
+            font-family: 'Consolas', monospace;
+            font-size: 13px;
+        }
+        .bifurcation-node span { color: #38bdf8; font-weight: bold; }
+        
+        .nota-profesor {
+            font-size: 10px;
+            color: #64748b;
+            text-align: justify;
+            margin-top: 25px;
+            border-top: 1px dashed #334155;
+            padding-top: 10px;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="sidebar">
+        <h2>PLE Mind Map Inspector</h2>
+        <p>Aprendiz: Luis David Silgado Miranda<br>Ficha: 3465982<br>Evidencia: GA4-240202501-AA1-EV02</p>
+        
+        <button class="btn-branch" id="br-1" onclick="cargarBifurcacion(1)">Branch 1: Information Sources</button>
+        <button class="btn-branch" id="br-2" onclick="cargarBifurcacion(2)">Branch 2: Processing Tools</button>
+        <button class="btn-branch" id="br-3" onclick="cargarBifurcacion(3)">Branch 3: Interaction (PLN)</button>
+        <button class="btn-branch" id="br-4" onclick="cargarBifurcacion(4)">Branch 4: Language Strategies</button>
+        <button class="btn-branch" id="br-5" onclick="cargarBifurcacion(5)">Branch 5: Work Application (ADSO)</button>
+    </div>
+
+    <div class="main-content">
+        <div class="card">
+            <h1 id="panel-titulo">Personal Learning Environment (PLE) Map</h1>
+            <p style="color: #94a3b8; font-size: 13px; margin: 5px 0 0 0;">Análisis del mapa mental y flujos de aprendizaje según el modelo de Kupchyk & Litvinchuk (2020).</p>
+        </div>
+
+        <div class="card">
+            <h3 id="seccion-subtitulo">Select a branch to expand the 5 levels of bifurcation</h3>
+            <div class="viewer-box" id="contenido-dinamico">
+                <!-- Se inyecta dinámicamente -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var ramasMindMap = {
+            1: {
+                titulo: "Branch 1: Information Sources (Donde busco información)",
+                contenido: "<p>Estructura de adquisición de datos del entorno digital:</p>" +
+                    "<div class='bifurcation-node'><span>Level 1:</span> Root -> My PLE</div>" +
+                    "<div class='bifurcation-node'><span>Level 2:</span> -> Input Channels (Fuentes de Entrada)</div>" +
+                    "<div class='bifurcation-node'><span>Level 3:</span> -> Technical Documentation (Documentación Oficial)</div>" +
+                    "<div class='bifurcation-node'><span>Level 4:</span> -> MDN Web Docs & W3Schools (Plataformas Web)</div>" +
+                    "<div class='bifurcation-node'><span>Level 5:</span> -> JavaScript Syntax Guides (Lectura técnica B1 en inglés para código)</div>"
+            },
+            2: {
+                titulo: "Branch 2: Processing Tools (Herramientas de creación)",
+                contenido: "<p>Estructura de software para transformar y organizar el conocimiento:</p>" +
+                    "<div class='bifurcation-node'><span>Level 1:</span> Root -> My PLE</div>" +
+                    "<div class='bifurcation-node'><span>Level 2:</span> -> ICT Tools (Mediación Tecnológica)</div>" +
+                    "<div class='bifurcation-node'><span>Level 3:</span> -> Code Repositories & Workspaces</div>" +
+                    "<div class='bifurcation-node'><span>Level 4:</span> -> GitHub Desktop & VS Code</div>" +
+                    "<div class='bifurcation-node'><span>Level 5:</span> -> Writing Code Comments in English (Escribir comentarios lógicos estructurados)</div>"
+            },
+            3: {
+                titulo: "Branch 3: Interaction & Networks (Mi red personal PLN)",
+                contenido: "<p>Estructura de redes de colaboración y entornos sociales:</p>" +
+                    "<div class='bifurcation-node'><span>Level 1:</span> Root -> My PLE</div>" +
+                    "<div class='bifurcation-node'><span>Level 2:</span> -> Personal Learning Network (PLN)</div>" +
+                    "<div class='bifurcation-node'><span>Level 3:</span> -> Developer Communities (Comunidades globales)</div>" +
+                    "<div class='bifurcation-node'><span>Level 4:</span> -> Stack Overflow & Forums</div>" +
+                    "<div class='bifurcation-node'><span>Level 5:</span> -> Asking Technical Questions in English (Formular problemas técnicos a ingenieros internacionales)</div>"
+            },
+            4: {
+                titulo: "Branch 4: Language Strategies (Estrategias específicas B1)",
+                contenido: "<p>Estructura de entrenamiento lingüístico diario:</p>" +
+                    "<div class='bifurcation-node'><span>Level 1:</span> Root -> My PLE</div>" +
+                    "<div class='bifurcation-node'><span>Level 2:</span> -> Cognitive Strategies (Estrategias de aprendizaje)</div>" +
+                    "<div class='bifurcation-node'><span>Level 3:</span> -> Digital Audio Streaming (Escucha activa)</div>" +
+                    "<div class='bifurcation-node'><span>Level 4:</span> -> Tech Podcasts & Tutorials</div>" +
+                    "<div class='bifurcation-node'><span>Level 5:</span> -> Improving Technical Pronunciation (Apropiación fonética de terminología de software)</div>"
+            },
+            5: {
+                titulo: "Branch 5: Work Application (Entorno laboral E-commerce)",
+                contenido: "<p>Estructura de transferencia directa al sector productivo del desarrollo:</p>" +
+                    "<div class='bifurcation-node'><span>Level 1:</span> Root -> My PLE</div>" +
+                    "<div class='bifurcation-node'><span>Level 2:</span> -> Workplace Integration (Aplicación Laboral Inmediata)</div>" +
+                    "<div class='bifurcation-node'><span>Level 3:</span> -> E-commerce Platform Architecture</div>" +
+                    "<div class='bifurcation-node'><span>Level 4:</span> -> API Ingestion & JSON Structures</div>" +
+                    "<div class='bifurcation-node'><span>Level 5:</span> -> Deploying Global Software Solutions (Desplegar soluciones accesibles con variables estandarizadas en inglés)</div>"
+            }
+        };
+
+        function cargarBifurcacion(id) {
+            var botones = document.getElementsByClassName('btn-branch');
+            for (var i = 0; i < botones.length; i++) { botones[i].classList.remove('active'); }
+            document.getElementById('br-' + id).classList.add('active');
+
+            var titulo = document.getElementById('panel-titulo');
+            var subtitulo = document.getElementById('seccion-subtitulo');
+            var contenedor = document.getElementById('contenido-dinamico');
+            var datos = ramasMindMap[id];
+
+            titulo.innerText = datos.titulo;
+            subtitulo.innerText = "5-Level Bifurcation Traversal (Trazabilidad de Niveles del Mapa Mental):";
+            contenedor.innerHTML = datos.contenido + 
+                "<div class='nota-profesor'>* Recomendación aplicada: Es claro que está empleando modelos de IA para sus tareas, en esta etapa es bueno hacerlo con moderación para que el aprendiz tenga conocimiento de lo que la IA está generando.</div>";
+        }
+
+        window.onload = function() {
+            cargarBifurcacion(1);
+        };
+    </script>
+</body>
+</html>
